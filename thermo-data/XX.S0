@@ -1,0 +1,5 @@
+;;          -*-Lisp-*-
+;; Reference file for testing of Thermo routines
+;; The coefficient data is from the Nist Webbook for N2
+;; Modify only when an alternate testing procedure is setup.
+191.61

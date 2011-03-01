@@ -1,0 +1,14 @@
+(defpackage :thermo
+  (:use :cl #|:cl-utilities|# :grid :mv-grid :lisp-unit :alexandria)
+  (:import-from :anaphora :aif :it)
+  (:shadow :lisp-unit :norm)
+  (:shadow :alexandria :set-equal)
+  (:import-from :my-utils #|:with-input-from-file|#
+		:polyeval :read-vectors))
+
+;; export is done in files in each module, either a setup file, or in
+;; individual files
+
+
+
+

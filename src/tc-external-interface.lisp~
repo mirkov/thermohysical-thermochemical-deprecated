@@ -1,0 +1,87 @@
+;; Mirko Vukovic
+;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; 
+;; Copyright 2011 Mirko Vukovic
+;; Distributed under the terms of the GNU General Public License
+;; 
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;; 
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;; 
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(in-package :thermo)
+
+(export '(S Cp H-rel *thermo-defaults*))
+
+;; See documentation in spec-dep-method-setup on how to view, set,
+;; change defaults
+(defun make-thermo-defaults-db ()
+  "Initialize the defaults list"
+  (list (list :S)
+	(list :Cp)
+	(list :H-rel)))
+
+(defparameter *thermo-defaults* 
+  (make-thermo-defaults-db)
+  "Specifies default calculation methods for Cp, S, ...")
+
+
+  
+
+(defgeneric Cp (species temperature)
+  (:documentation "Return value of Cp at `temperature' for species
+
+Species properties can be specified in several ways:
+ - symbol
+ - janaf coefficients in form of a janaf-coefficients object
+ - shomate-fit coefficients using the shomate-fit object
+
+In case symbol is given, the method chosen is determined by the
+contents of *thermo-defaults*")
+  (:method ((species symbol) temperature)
+    (let ((method (default-species-method *thermo-defaults* :Cp species)))
+    (if method (funcall #'Cp method temperature)
+	(error "Default method for calculating Cp undefined for ~a" species)))))
+
+(defgeneric S (species temperature)
+  (:documentation "Return value of S at `temperature' for species
+
+Species properties can be specified in several ways:
+ - symbol
+ - janaf coefficients in form of a janaf-coefficients object
+ - shomate-fit coefficients using the shomate-fit object
+
+In case symbol is given, the method chosen is determined by the
+contents of *thermo-defaults*")
+    (:method ((species symbol) temperature)
+    (let ((method (default-species-method *thermo-defaults* :S species)))
+    (if method (funcall #'S method temperature)
+	(error "Default method for calculating S undefined for ~a" species)))))
+
+(defgeneric H-rel (species temperature)
+  (:documentation "Return value of H-rel at `temperature' for species
+
+Species properties can be specified in several ways:
+ - symbol
+ - janaf coefficients in form of a janaf-coefficients object
+ - shomate-fit coefficients using the shomate-fit object
+
+In case symbol is given, the method chosen is determined by the
+contents of *thermo-defaults*")
+    (:method ((species symbol) temperature)
+    (let ((method (default-species-method *thermo-defaults* :H-rel species)))
+    (if method (funcall #'H-rel method temperature)
+	(error "Default method for calculating H-rel undefined for ~a" species)))))
+
+
+
+
+

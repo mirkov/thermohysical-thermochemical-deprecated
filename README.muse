@@ -1,0 +1,79 @@
+System description:
+
+The system provides several types of functionalities:
+ - thermodynamic coefficients (Cp, S, etc)
+ - collision integral (Omega) formulae
+ - transport-coefficients (viscosity, thermal conductivity)
+ - formulary for higher order formulae based on the previous three.
+
+All internal calculations and all results are in SI.  Eventually, I
+will add conversion utilities.
+
+
+The various coefficients are calculated using fits or interpolations.
+The interpolation data or the fit coefficients are stored in
+subdirectories
+
+Often, there are multiple ways to calculate the same quantity (say Cp)
+The system is set-up to provide a default method, but with the option
+for the user to over-ride it.  See section
+[[#def-calc-methods][Setting, viewing and changing default calculation methods]]
+
+
+** Status
+
+The system has not yet been tested in a user environment.
+
+
+
+
+
+
+
+
+
+
+
+** Setting, viewing and changing default calculation methods
+.#def-calc-methods
+
+Default methods are stored in an a-list of the following form:
+
+((:Cp (:Ar . method1) (:He . method2) ...)
+ (:S ( ... ) ...)
+ ...)
+
+For example of usage, see the file [[default-methods.lisp]]
+
+*** How method selection works
+
+Methods are actually objects.  Each calculation has a default method
+such as
+
+(Cp :Ar)
+
+This method will lookup the method in the above alist and then call
+
+(Cp method1)
+
+*method1* is an object that stores the fit or interpolation
+coefficients.  The *Cp* method knows how to evaluate the fit formula or
+do the interpolation.
+
+The variables  \*thermo-defaults\* \*omega-calc-defaults\* and
+\*transp-coeff-defaults\* store the default definitions.
+
+At this time, there is no unified method to view and set the defaults.
+For each of the above variables, see documentation in the files where
+they are defined.
+
+*** User interface
+
+For calculation methods for a coefficient for a particular species
+(such as Cp for :Ar), the functions are:
+ - default-species-method
+ - setf default-species-method
+
+For collision integrals it is
+ - default-omega-calc-method
+ - setf default-omega-calc-method

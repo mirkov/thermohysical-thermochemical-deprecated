@@ -1,0 +1,33 @@
+(in-package :thermo)
+
+(export '(read-data-file
+	  *lennard-jones-coeffs* read-LJ-coeffs lennard-jones-coeffs
+	  *lemmon-jacobsen-table-iv*))
+
+(defparameter *data-directory*
+  #P"/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/thermo-data/"
+  "Path to the data directory (not including JANAF tables)")
+
+(defparameter *janaf-directory*
+  #P"/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/janaf/"
+  "Path to the JANAF data directory")
+
+
+(defun read-data-file (file &optional (directory *data-directory*))
+  "Return contents of `file' in `directory'
+
+Signal error if file not found"
+  (with-input-from-file (stream
+			 (merge-pathnames file
+					  directory)
+			 :if-does-not-exist :error)
+    (read stream)))
+
+
+
+
+
+(defparameter *lemmon-jacobsen-table-iv*
+  (read-data-file "lemmon-jacobsen-table-iv.dat")
+  "Coefficients from Lemmon & Jacobsen, 2004, table IV for the
+residual fluid thermal conductivity equations")

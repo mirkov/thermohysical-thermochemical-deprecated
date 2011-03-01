@@ -1,0 +1,6 @@
+((:H2 (:M 2.016) (:sigma 2.915) (:epsilon/K 38.0) (:Tc 33.3))
+ (:He (:M 4.003) (:sigma 2.576) (:epsilon/K 10.2) (:Tc 5.26))
+ (:Ar (:M 39.944) (:sigma 3.418) (:epsilon/K 124) (:Tc 151))
+ (:Air (:M 28.97) (:sigma 3.617) (:epsilon/K 97) (:Tc 132))
+ (:N2 (:M 28.02) (:sigma 3.681) (:epsilon/K 91.5) (:Tc 126.2))
+ (:O2 (:M 32) (:sigma 3.433) (:epsilon/K 113) (:Tc 154.4))))

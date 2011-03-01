@@ -1,0 +1,160 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Fri Feb 11 15:52:49 2011
+;; Desktop file format version 206
+;; Emacs version 23.1.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '("line"))
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/janaf-coefficients.lisp"
+  "janaf-coefficients.lisp"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  1056
+  '(877 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . emacs-mule-unix)))
+
+(desktop-create-buffer 206
+  "/home/mv/.unison/my-lisp-stuff.prf"
+  "my-lisp-stuff.prf"
+  'fundamental-mode
+  nil
+  241
+  '(1480 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  ".unison"
+  'dired-mode
+  nil
+  2391
+  '(nil nil)
+  t
+  '("/home/mv/.unison/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/janaf/ar.dat"
+  "ar.dat"
+  'fundamental-mode
+  nil
+  408
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/shomate-coeffs.lisp"
+  "shomate-coeffs.lisp"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/environment-setup.lisp"
+  "environment-setup.lisp"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  759
+  '(637 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "janaf"
+  'dired-mode
+  nil
+  257
+  '(nil nil)
+  t
+  '("/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/janaf/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/package-def.lisp"
+  "package-def.lisp"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  168
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/thermo-data.asd"
+  "thermo-data.asd"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "*.asd"
+  'dired-mode
+  nil
+  136
+  '(nil nil)
+  t
+  '("/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/*.asd")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "thermophysical&thermochemical"
+  'dired-mode
+  nil
+  1289
+  '(nil nil)
+  t
+  '("/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/")
+  nil)
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/my-utils/my-utils.lisp"
+  "my-utils.lisp"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  7783
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  "/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical&thermochemical/transport-coeffs.lisp"
+  "transport-coeffs.lisp"
+  'lisp-mode
+  '(slime-mode eldoc-mode)
+  1509
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+

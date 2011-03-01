@@ -1,0 +1,70 @@
+;; Mirko Vukovic
+;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; 
+;; Copyright 2011 Mirko Vukovic
+;; Distributed under the terms of the GNU General Public License
+;; 
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;; 
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;; 
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(in-package :thermo-user)
+
+#|
+
+The package thermo-user is intended for the user to use the facilities
+provided by the thermophysics&chemistry package.
+
+The package :thermo is intended for the development of the package.
+
+
+* General notes
+
+** Default calculation methods
+
+|#
+
+
+#|
+
+* Thermodynamic coefficients
+
+The thermodynamic coefficients, such as S, Cp, H are provided by two
+types of utilities, based on NIST's webbook: formulas using the
+Shomate coefficients, or data interpolation tables.
+
+One can use either the defaults or specify explicity which method.  This is illustrated below for the calculation of H2 specific heat.
+|#
+
+;;> Using default method
+(Cp :H2 300) ;;->28.849000930786133d0
+;;> Using the shomate fits
+(Cp (make-shomate-coeffs :H2) 300) ;;->28.849483
+;;> Using interpolation of the Janaf tables
+(Cp (make-janaf-coeffs :H2) 300);;->28.849000930786133d0
+
+#|
+
+The shomate coefficients are stored in the thermo-data directory, in
+files such as H2.shomate using a lisp format.
+
+Janaf coefficients are stored in the janaf directory, in files such as
+H2.dat using a txt format.
+
+For most coefficients, we have included the valid temperature range,
+and if the requested temperature falls outside of it, a condition is
+thrown
+
+|#
+
+
+(Cp (make-shomate-coeffs :H2) 100);;-> error

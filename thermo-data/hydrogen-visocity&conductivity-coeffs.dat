@@ -1,0 +1,27 @@
+;; -*-lisp-*- Table 2 from Assael et al, J.Phys.Chem.Data, Vol 15 ,
+;; No. 4, 1986
+;;
+;; The value of -99 in the third column is a placeholder.  It is empty
+;; in the reference.  I keep it full, so that the elements of the
+;; stored vector have proper indexing in eq (9)
+
+((0   0.354125  -99            435  0.49145)
+ (1  -0.427581 -8.13854095e-9 -8.6  0.16246)
+ (2   0.149251  3.97854897e-6  0.1 -0.0075)
+ (3  -0.037174 -7.62127455e-4 )
+ (4   0.003176  7.8169885e-2)
+ (5  nil        0)
+ (6  nil        0)
+ (7  nil        1.14136906e1)
+ (8  nil        4.75486954e1)
+ (9  nil        0)
+ (10 nil       -4.18040384e2)
+ (11 nil        4.60945792e2)
+ (12 nil        0)
+ (13 nil       -4.10534450e2)
+ (14 nil        6.03774849e2)
+ (15 nil       -3.92633104e2) 
+ (16 nil        9.99743666e1)
+ (17 nil        0)
+ (18 nil        1.36830122e4)
+ (19 nil        1.79687156e2))

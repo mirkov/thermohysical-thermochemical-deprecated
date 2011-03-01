@@ -1,0 +1,65 @@
+;; Mirko Vukovic
+;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; 
+;; Copyright 2011 Mirko Vukovic
+;; Distributed under the terms of the GNU General Public License
+;; 
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;; 
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;; 
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(in-package :thermo)
+
+;; Lenard-Jones coefficients are read from a file.  They can be
+;; created as objects using (make-lj-coeffs species)
+
+(export '(make-LJ-coeffs *lennard-jones-coeffs* lennard-jones-coeffs))
+
+(defun read-LJ-coeffs (&optional (file "lennard-jones-coeffs.dat"))
+  "Read Shomate coefficients for the species"
+  (read-data-file file))
+
+
+(defparameter *lennard-jones-coeffs* (read-LJ-coeffs)
+  "Lennard Jones coefficients")
+
+(defun lennard-jones-coeffs (species
+			     &optional (db *lennard-jones-coeffs*))
+  "return Lennard-Jones coefficients for `species'"
+  (cdr (assoc species db)))
+
+
+(defclass lj-coeffs ()
+  ((species :initarg :species
+	    :accessor species)
+   (m :initarg :mass-amu
+      :accessor mass-amu
+      :documentation "Species mass in AMU")
+   (sigma :initarg :sigma
+	  :accessor sigma
+	  :documentation "Species cross-section in Angstrom")
+   (epsilon/K :initarg :epsilon/K
+	      :accessor epsilon/K
+	      :documentation "Potential-well depth, dimensionless"))
+  (:documentation "Lennard-Jones coefficients for a species"))
+
+(defmethod describe-object ((container lj-coeffs) stream)
+  (format stream "Lennard-Jones coefficients for ~a"
+	    (species container)))
+
+(defun make-lj-coeffs (species)
+  (let ((coeffs (lennard-jones-coeffs species)))
+    (make-instance 'lj-coeffs
+		   :species species
+		   :mass-amu (cadr (assoc :m coeffs))
+		   :sigma (cadr (assoc :sigma coeffs))
+		   :epsilon/k (cadr (assoc :epsilon/k coeffs)))))

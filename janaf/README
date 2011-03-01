@@ -1,0 +1,7 @@
+Data obtained from the NIST site: kinetics.nist.gov/janaf
+
+The units are in K, J/K.mol
+
+Note: mol is the preferred measure instead of kg.  Thus, I need to be
+careful when other sources (such as the engineeringtoolbox.com) use
+units such as kJ/K.kG
