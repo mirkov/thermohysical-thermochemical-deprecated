@@ -12,30 +12,27 @@ will add conversion utilities.
 
 The various coefficients are calculated using fits or interpolations.
 The interpolation data or the fit coefficients are stored in
-subdirectories
+sub-directories.
+
+Stuff below needs to be updated ...
+
+
 
 Often, there are multiple ways to calculate the same quantity (say Cp)
 The system is set-up to provide a default method, but with the option
 for the user to over-ride it.  See section
-[[#def-calc-methods][Setting, viewing and changing default calculation methods]]
+[[id:dag7x7w0hgf0][Setting, viewing and changing default calculation methods]]
 
 
 ** Status
 
-The system has not yet been tested in a user environment.
-
-
-
-
-
-
-
-
-
 
 
 ** Setting, viewing and changing default calculation methods
-.#def-calc-methods
+   :PROPERTIES:
+   :ID:       dag7x7w0hgf0
+   :END:
+
 
 Default methods are stored in an a-list of the following form:
 
@@ -43,7 +40,7 @@ Default methods are stored in an a-list of the following form:
  (:S ( ... ) ...)
  ...)
 
-For example of usage, see the file [[default-methods.lisp]]
+For example of usage, see the file [[doc/default-methods.lisp][default-methods.lisp]]
 
 *** How method selection works
 
