@@ -1,0 +1,353 @@
+# Mirko Vukovic
+# Time-stamp: <2011-05-10 09:13:14EDT guided-tour.org>
+# 
+# Copyright 2011 Mirko Vukovic
+# Distributed under the terms of the GNU General Public License
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+* Setting up
+
+Lisp setup loads the systems and sets the `thermo-user' package
+#+begin_src lisp :session
+(in-package :cl-user)
+(load-asdf-system :thermo)
+(load-asdf-system :thermo-user)
+(in-package :thermo-user)
+#+end_src
+
+#+results:
+: #<PACKAGE "THERMO-USER">
+
+
+The package thermo-user is intended for the user to use and explore
+the facilities provided by the thermophysics&chemistry package.  It
+includes gnuplot and mv-grid-utils for graphical and tabular
+exploration. 
+
+The package :thermo is for the package development.
+
+
+* General notes
+
+** Default calculation methods
+
+
+
+
+
+
+* Thermodynamic coefficients
+
+The thermodynamic coefficients, such as S, Cp, H are provided by two
+types of utilities, based on NIST's webbook: formulas using the
+Shomate coefficients, or data interpolation tables.
+
+One can use either the defaults or specify explicity which method.
+This is illustrated below for the calculation of H2 specific heat.
+
+
+The default method is used if we specify the species symbols
+#+begin_src lisp :session
+(Cp :H2 300) 
+#+end_src
+
+#+results:
+: 28.849000930786133d0
+
+Instead, we can explicitly specify the shomate fit coefficients
+#+begin_src lisp :session
+(Cp (make-shomate-coeffs :H2) 300) 
+#+end_src
+
+#+results:
+: 28.849483
+
+Or we can use the interpolation of the Janaf tables.  This call uses
+GSLL's spline interpolation facilities.
+#+begin_src lisp :session
+(Cp (make-janaf-coeffs :H2) 300)
+#+end_src
+
+#+results:
+: 28.849000930786133d0
+
+
+
+The shomate coefficients are stored in the thermo-data directory, in
+files such as H2.shomate using a lisp format.
+
+Janaf coefficients are stored in the janaf directory, in files such as
+H2.dat using a txt format.
+
+
+
+
+
+** Temperature ranges
+
+For most coefficients, we have included the valid temperature range,
+and if the requested temperature falls outside of it, an error
+condition is thrown.
+
+#+begin_src lisp :session
+(Cp (make-shomate-coeffs :H2) 100);;-> error
+#+end_src
+
+
+
+* Plotting
+
+The thermo-user package is build on top mv-grid-utils and mv-gnuplot.
+This allows for simple plotting using the gcmap macro.
+
+After creating a plot window,
+#+begin_src lisp :session
+(new-window)
+#+end_src
+
+#+results:
+: ("CL-Gnuplot-1"
+:  (#<SB-IMPL::PROCESS 23415 :RUNNING> #<BROADCAST-STREAM {D74E3E1}>))
+
+We can create a plot comparing the specific heat
+calculated by the two methods: 
+#+begin_src lisp :session
+  (let ((temp (lseq 300 1000))
+        (sh (make-shomate-coeffs :H2))
+        (j (make-janaf-coeffs :H2)))
+  (set-to ((:xlabel "T [K]")
+           (:ylabel "Cp [J/mol K]"))
+    (plot-xys temp
+              (list (list (gcmap (Cp sh @!temp) temp) :title "Shomate")
+                    (list (gcmap (Cp j @!temp) temp) :title "Interpolation")))))
+  
+  
+#+end_src
+[[file:H2-Cp-vs-temp--shomate-vs-interp-data-comp.png]]
+#+results:
+: NIL
+
+
+
+This plot demonstrates the use of currying as applied to grids via
+`gcmap'.  It also shows that currently, the arguments of the curried
+function have to be atoms and not forms that are to be evaluated
+
+To save this plot to a post-script file, we use the following facility
+from mv-gnuplot
+#+begin_src lisp :session
+  (with-ps-output ("shomate-vs-interpolation.ps" #P"./")
+    (let ((temp (lseq 300 1000))
+          (sh (make-shomate-coeffs :H2))
+          (j (make-janaf-coeffs :H2)))
+      (plot-xys temp
+                (list (list (gcmap (Cp sh @!temp) temp) :title "Shomate")
+                      (list (gcmap (Cp j @!temp) temp) :title "Interpolation")))))
+#+end_src
+
+#+results:
+: NIL
+
+This creates a post-script file in lisp's run directory.  There are
+currently no options for other output types (such as png).
+
+Similar plots can be made for S, and H-rel
+
+
+
+
+
+* Collision parameters
+
+The collision parameter module offers the following functionality:
+
+ - Loading the Lennard-Jones collision parameters from
+   lennard-jones-coeffs.lisp
+ - Calculation of the Omega-11 and Omega-22 collision integrals
+
+The Lennard-Jones parameters can be obtained in two ways:
+
+#+begin_src lisp :session
+(make-lj-coeffs :H2)
+#+end_src
+
+#+results:
+: #<THERMO::LJ-COEFFS {D8DDE89}>
+
+#+begin_src lisp :session
+(lennard-jones-coeffs :H2) 
+#+end_src
+
+#+results:
+: ((:M 2.016) (:SIGMA 2.915) (:EPSILON/K 38.0) (:TC 33.3))
+
+
+
+The collision integrals are calculated using the equations by Kee et
+al by the following calls
+
+#+begin_src lisp :session
+(omega-11 1.0)
+#+end_src
+
+#+results:
+: 1.4361933
+
+#+begin_src lisp :session
+(omega-22 1.0)
+#+end_src
+
+#+results:
+: 1.6007648
+
+
+
+The infrastructure for the collision integrals allows multiple methods
+to be used to calculate the coefficients.
+
+The individual methods are defined by classes:
+ - Kee-omega-11-coeffs
+ - Kee omega-22-coeffs
+ - LJ04-omega-22-coeffs from the Lemmon&Jacobsen paper
+
+So, instead of the defaults, we can choose the calculation method by
+calling slightly different functions: 
+
+#+begin_src lisp :session
+(omega-22% (make-kee-omega-22-coeffs) 1.0);;->1.6007648
+#+end_src
+
+#+results:
+: 1.6007648
+
+#+begin_src lisp :session
+(omega-22% (make-lj04-omega-22-coeffs) 1.0);;->1.5387956
+#+end_src
+
+#+results:
+: 1.5387956
+
+
+
+The Kee approximation is preferred to that of Lemmon & Jacobsen as
+these have a more restricted validity region:
+#+begin_src lisp :session
+  (let ((temp (gseq 0.1 100))
+        (k (make-kee-omega-22-coeffs))
+        (lj04 (make-lj04-omega-22-coeffs)))
+    (set-to ((logscale :xy)
+             (xlabel "T_reduced")
+             (ylabel "Omega"))
+      (plot-xys temp
+                (list (list (gcmap (omega-22%  k @!temp) temp) :title "Kee")
+                      (list (gcmap (omega-22% lj04 @!temp) temp) :title "LJ04")))))
+#+end_src
+
+#+results:
+: NIL
+
+[[file:Omega-22-approx-comp.png]]
+
+
+
+* Transport coefficients
+
+The package 
+
+ - viscosity
+ - thermal conductivity
+ - diffusion
+
+Viscosity is calculated using the kinetic theory result and the
+Lennard-Jones parameters as follows:
+
+#+begin_src lisp :session
+(mu-0 :H2 350)
+#+end_src
+
+#+results:
+: 1.0010757183405921d-5
+
+The story is more complicated for thermal conductivity, as it
+depends on the internal degrees of freedom, encapsulated in Cv.
+
+So, in practice, there will be many methods for different gases.
+
+From the references found so far I have assembled the following
+methods:
+- Lemmon & Jacobsen for N2, Ar, O2 and Air
+- Assael et al for H2
+- Kinetic theory forulation using Cv for He
+
+These are captured in their objects and set as defaults, so that the
+following works nicely:
+
+#+begin_src lisp :session
+(lambda-0 :H2 350);;->0.21095513871295823d0
+#+end_src
+
+#+results:
+: 0.21095513871295823d0
+
+#+begin_src lisp :session
+(lambda-0 :O2 350);;->0.029757758335946592d0
+#+end_src
+
+#+results:
+: 0.029757758335946592d0
+
+As with all the other coefficients, these provide temperature checks.
+
+One has to be careful with the thermal conductivity calculations, as
+these formulations may use the gas \mu_0 and C_v to calculate the
+thermal conductivity, \lambda_0.  Any errors in \mu_0 and C_v
+calculations will propagate then into \lamba_0.
+
+** Comparison of Argon \lambda_0 using various methods
+
+   Argon thermal conductivity can be calculated using the
+   Lemmon-Jacobsen fits, or using the kinetic theory formalism.  The
+   following plot compares their predictions (and serves as a
+   cross-check).
+
+   #+begin_src lisp :session
+     (let ((Temp (lseq 200.0 380.))
+           (coeff (make-lj-coeffs :Ar)))
+     (set-to ((xlabel "T [K]")
+              (ylabel "lambda_0 [W/m K]"))
+       (plot-xys Temp 
+                 (list (list (gcmap (lambda-0 coeff @!Temp) Temp) :title "Kinetic Theory")
+                       (list (gcmap (lambda-0 :Ar @!Temp) Temp) :title "Lemmon-Jacobsen")))))
+   #+end_src
+
+   #+results:
+   : NIL
+
+[[file:Ar-lambda_0--lemmon-jackobsen-vs-kinetic-theory.png][Argon \lambda_0 calculated from kinetic theory and Lemmon-Jacobsen fit]]   
+
+
+
+
+* Not implemente yet
+
+  
+ - hard-sphere models (of academic interest)
+ - Sutherland model
+ - transport coefficients for mixtures.
+
+
+
+
+

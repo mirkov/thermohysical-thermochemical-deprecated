@@ -18,7 +18,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 (defpackage :thermo
-  (:use :cl #|:cl-utilities|# :grid :mv-grid :lisp-unit :alexandria)
+  (:use :cl :grid :mv-grid :lisp-unit :alexandria)
   (:import-from :anaphora :aif :it)
   (:shadow :lisp-unit :norm)
   (:shadow :alexandria :set-equal)

@@ -21,6 +21,7 @@
 (in-package :thermo)
 
 (defmethod Cv ((obj constant-coefficient) temperature)
+  "Cv as a constant.  Applicable to ideal gases"
   (with-slots (data min-T max-T) obj
     (assert (and (<= min-T temperature)
 		 (>= max-T temperature)))

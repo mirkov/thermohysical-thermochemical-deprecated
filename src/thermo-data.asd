@@ -19,7 +19,7 @@
 			 (:file "janaf-coefficients"
 				:depends-on ("tc-external-interface"))
 			 (:file "constant-thermo-coeffs"
-				:depends-on ("tc-external-interface")))
+				:depends-on ("tc-external-interface"))))
    (:module "collision-parameters"
 	    :pathname #P"./"
 	    :depends-on ("thermo-setup")

@@ -47,15 +47,16 @@
       (make-lj-coeffs species)))
  '(:ar :n2 :o2 :air :he :h2))
 
-#|
+;; thermal conductivity using the lennard-jones potentials and kinetic
+;; theory formulation
 (mapcar
  #'(lambda (species)
-     (setf (default-species-method *transp-coeff-defaults* :mu-0 species)
+     (setf (default-species-method *transp-coeff-defaults* :lambda-0 species)
       (make-lj-coeffs species)))
- '(:ar :n2 :o2 :air :he :h2))
-|#
+ '(:he))
 
-;; thermal conductivity from Lemmon & Jacobsen
+;; thermal conductivity from Lemmon & Jacobsen based on review of
+;; experimental data
 (mapcar
  #'(lambda (species)
      (setf (default-species-method *transp-coeff-defaults* :lambda-0 species)

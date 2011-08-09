@@ -33,11 +33,11 @@ Signal error if file not found"
   "Coefficients from Lemmon & Jacobsen, 2004, table IV for the
 residual fluid thermal conductivity equations")
 
-(defparameter +R+ physics-constants:+gas-constant-sp+
+(defconstant +R+ physics-constants:+gas-constant-sp+
   "Universal gas constant, 8.3147135 J/K mol")
-(defparameter +A+ physics-constants:+avogadros-number-sp+
+(defconstant +A+ physics-constants:+avogadros-number-sp+
   "Avogadro's number, 6.0221e23/mol")
-(defparameter +k+ physics-constants:+boltzmann-constant-sp+
+(defconstant +k+ physics-constants:+boltzmann-constant-sp+
   "Boltzmann's constant, 1.3807e-23 J/K")
-(defparameter +amu+ physics-constants:+atomic-mass-unit-sp+
+(defconstant +amu+ physics-constants:+atomic-mass-unit-sp+
   "Atomic mass unit, 1.6605e-27 kg")

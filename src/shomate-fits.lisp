@@ -1,3 +1,22 @@
+;; Mirko Vukovic
+;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; 
+;; Copyright 2011 Mirko Vukovic
+;; Distributed under the terms of the GNU General Public License
+;; 
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;; 
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;; 
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 (in-package :thermo)
 
 (export '(make-shomate-coeffs))
@@ -101,7 +120,7 @@ valid"
 (defmethod get-shomate-coeffs ((coeffs shomate-coeffs) &key
 			       temp index (all t))
   "Return shomate coefficients.  By default return all the stored
-coefficients (also corresponds to keyword `all'
+coefficients (also corresponds to keyword `all')
 
 Other keywods (index or temp) specify a specific set of coefficients,
 either by storage index or by valid temperature"
@@ -139,53 +158,54 @@ either by storage index or by valid temperature"
 
 
 (define-test Cp/H-rel/S0
-  (let ((XX (init-thermo-data 'XX))
+  ;; test reading of shomate coefficient files
+  (let ((XX (make-shomate-coeffs :XX))
 	(*epsilon* 0.001))
     (let ((data '((Temp 100 C0 29.10 S0 159.8 H-rel -5.77)
 		  (Temp 500 C0 29.58 S0 206.7 H-rel 5.91)))
 	  (coeffs (rest (get-shomate-coeffs XX :index 0))))
       (assert-numerical-equal (getf (first data) 'C0)
-			      (Cp 100 coeffs) 0)
+			      (Cp coeffs 100) 0)
       (assert-numerical-equal (getf (first data) 'S0)
-			      (S0 100 coeffs) 0)
+			      (S coeffs 100) 0)
       (assert-numerical-equal (getf (first data) 'H-rel)
-			      (H-rel 100 coeffs) 0)
+			      (H-rel coeffs 100) 0)
       (assert-numerical-equal (getf (second data) 'C0)
-			      (Cp 500 coeffs) 0)
+			      (Cp coeffs 500) 0)
       (assert-numerical-equal (getf (second data) 'S0)
-			      (S0 500 coeffs) 0)
+			      (S coeffs 500) 0)
       (assert-numerical-equal (getf (second data) 'H-rel)
-			      (H-rel 500 coeffs) 0))
+			      (H-rel coeffs 500) 0))
     (let ((data '((Temp 500 C0 29.58 S0 206.7 H-rel 5.91)
 		  (Temp 2000 C0 35.98 S0 252.1 H-rel 56.14)))
 	  (coeffs (rest (get-shomate-coeffs XX :index 1))))
       (assert-numerical-equal (getf (first data) 'C0)
-			      (Cp 500 coeffs) 1)
+			      (Cp coeffs 500) 1)
       (assert-numerical-equal (getf (first data) 'S0)
-			      (S0 500 coeffs) 1)
+			      (S coeffs 500) 1)
       (assert-numerical-equal (getf (first data) 'H-rel)
-			      (H-rel 500 coeffs) 1)
+			      (H-rel coeffs 500) 1)
       (assert-numerical-equal (getf (second data) 'C0)
-			      (Cp 2000 coeffs) 1)
+			      (Cp coeffs 2000) 1)
       (assert-numerical-equal (getf (second data) 'S0)
-			      (S0 2000 coeffs) 1)
+			      (S coeffs 2000) 1)
       (assert-numerical-equal (getf (second data) 'H-rel)
-			      (H-rel 2000 coeffs) 1))
+			      (H-rel coeffs 2000) 1))
     (let ((data '((Temp 2000 C0 35.97 S0 252.1 H-rel 56.14)
 		  (Temp 6000 C0 38.27 S0 293 H-rel 205.8)))
 	  (coeffs (rest (get-shomate-coeffs XX :index 2))))
       (assert-numerical-equal (getf (first data) 'C0)
-			      (Cp 2000 coeffs) 2)
+			      (Cp coeffs 2000) 2)
       (assert-numerical-equal (getf (first data) 'S0)
-			      (S0 2000 coeffs) 2)
+			      (S coeffs 2000) 2)
       (assert-numerical-equal (getf (first data) 'H-rel)
-			      (H-rel 2000 coeffs) 2)
+			      (H-rel coeffs 2000) 2)
       (assert-numerical-equal (getf (second data) 'C0)
-			      (Cp 6000 coeffs) 2)
+			      (Cp coeffs 6000) 2)
       (assert-numerical-equal (getf (second data) 'S0)
-			      (S0 6000 coeffs)2)
+			      (S coeffs 6000)2)
       (assert-numerical-equal (getf (second data) 'H-rel)
-			      (H-rel 6000 coeffs) 2))))
+			      (H-rel coeffs 6000) 2))))
   
 				      
 
