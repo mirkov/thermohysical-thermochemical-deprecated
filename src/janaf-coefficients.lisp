@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; Time-stamp: <2011-08-11 14:11:29 janaf-coefficients.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -37,7 +37,8 @@ returning the data in an unspecialized CL-array (element-types set to
   (read-line stream t)
   (read-line stream t)
   (read-line stream t)
-  (read-grid `(,*janaf-table-rows* 8) stream 't t nil :type 't))
+  ;;(read-grid `(,*janaf-table-rows* 8) stream 't t nil :type 't)
+  (read-grid `(,*janaf-table-rows* 8) stream 't :eof-value :eof))
     
 
 (define-condition non-existant-janaf-table (error)
@@ -73,13 +74,14 @@ Table can be specified by
   (:method ((path pathname))
     (with-input-from-file (stream path)
       (values
-       (grid-coerce
-	(grid-substitute most-positive-double-float
-			 'INFINITE
-			 (let ((*array-type* 'array))
-			   (read-janaf-table% stream))
-			 :test #'equal)
-	'double-float)
+       (progn
+	 (grid-coerce
+	  (grid-substitute most-positive-double-float
+			   'INFINITE
+			   (let ((*array-type* 'array))
+			     (read-janaf-table% stream))
+			   :test #'equal)
+	  'double-float))
        path)))
   (:method ((species symbol))
     (let ((file (janaf-table-file-name species)))
@@ -104,7 +106,7 @@ Table can be specified by
 
 (defmethod print-object ((janaf janaf-coefficients) stream)
   (print-unreadable-object (janaf stream :type t :identity t)
-    (format stream "Table of JANAF coefficients for ~a~%"
+    (format stream "JANAF coefficients for ~a~%"
 	    (species janaf))))
 
 
@@ -115,22 +117,29 @@ Table can be specified by
  - read the data
  - store the raw data, data source and species
  - store T-min, T-max
- - initialize interpolation tables"
-  (multiple-value-bind (table-data file)
-      (read-janaf-table (slot-value coefficients 'species))
-    (setf (slot-value coefficients 'data) table-data
-	  (slot-value coefficients 'source) file)
-    (let ((temp-column (column table-data 0)))
-      (setf (slot-value coefficients 'min-T)
-	    (gref temp-column 0)
-	    (slot-value coefficients 'max-T)
-	    (gref temp-column (1- *janaf-table-rows*))
-	    (slot-value coefficients 'interpolation-data)
-	    (make-array 8))
-      (dotimes (i 8)
-	(setf (aref (slot-value coefficients 'interpolation-data) i)
-	      (gsll:make-spline gsll:+cubic-spline-interpolation+
-				temp-column (column table-data i)))))))
+ - initialize interpolation tables
+
+The JANAF table is read as a double-float foreign-array since it will
+be passed to GSLL's spline interpolate for evaluation."
+  ;; mv-grid-utils uses the native array type by default.  The native
+  ;; type is OK on sbcl, but not on clisp.  Thus, I need to explicitly
+  ;; declare the array type
+  (let ((*array-type* 'foreign-array))
+    (multiple-value-bind (table-data file)
+	(read-janaf-table (slot-value coefficients 'species))
+      (setf (slot-value coefficients 'data) table-data
+	    (slot-value coefficients 'source) file)
+      (let ((temp-column (column table-data 0)))
+	(setf (slot-value coefficients 'min-T)
+	      (gref temp-column 0)
+	      (slot-value coefficients 'max-T)
+	      (gref temp-column (1- *janaf-table-rows*))
+	      (slot-value coefficients 'interpolation-data)
+	      (make-array 8))
+	(dotimes (i 8)
+	  (setf (aref (slot-value coefficients 'interpolation-data) i)
+		(gsll:make-spline gsll:+cubic-spline-interpolation+
+				  temp-column (column table-data i))))))))
 
 
 
@@ -165,7 +174,8 @@ valid ones are ~{~a ~}" column-specifier
 
 (defgeneric janaf-coeff (coeffs column temperature)
   (:documentation "Return the value of the coefficient from column at temperature")
-  (:method ((coeffs janaf-coefficients) (column number) (temperature double-float))
+  (:method ((coeffs janaf-coefficients) (column number)
+	    (temperature #+sbcl double-float #+clisp number))
     (gsll:evaluate (aref (slot-value coeffs 'interpolation-data) column)
 	      temperature))
   (:method ((coeffs janaf-coefficients) (column-specifier symbol) (temperature number))

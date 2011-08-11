@@ -1,0 +1,21 @@
+2011-08-11  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/janaf-coefficients.lisp (initialize-instance): Added
+	explicit binding of *array-type* as 'foreign-array. 
+
+2011-08-10  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/janaf-coefficients.lisp (janaf-coeff): Method specialized on
+	column number, I had temperature specialized as double-float.
+	THis is not a valid class in clisp.  Added conditional code for
+	clisp and sbcl.
+	(read-janaf-table%): Addapted call to mv-grid-utils:read-grid to
+	new calling convention
+
+	* src/environment-setup.lisp (*data-directory*)
+	(*janaf-directory*): Modified home path definition to take into
+	account on which machine the code is running
+
+	* README.org: Cleaned up
+
+	* doc/user-documentation.org: Created file.  Right now it contains junk. 

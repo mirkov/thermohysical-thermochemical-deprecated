@@ -1,16 +1,22 @@
 (in-package :thermo)
 
 (export '(read-data-file
-	  *lennard-jones-coeffs* read-LJ-coeffs lennard-jones-coeffs
+	  ;;*lennard-jones-coeffs* read-LJ-coeffs lennard-jones-coeffs
 	  *lemmon-jacobsen-table-iv*
 	  +R+ +A+ +k+ +amu+))
 
 (defparameter *data-directory*
-  #P"/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/thermo-data/"
+  (merge-pathnames
+   #P"my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/thermo-data/"
+   #+WTEHCFMXYP1 #p"/home/977315/"
+   #+CYSSHD1 #P"/home/mv/")
   "Path to the data directory (not including JANAF tables)")
 
 (defparameter *janaf-directory*
-  #P"/home/mv/my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/janaf/"
+  (merge-pathnames
+   #P"my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/janaf/"
+   #+WTEHCFMXYP1 #p"/home/977315/"
+   #+CYSSHD1 #P"/home/mv/")
   "Path to the JANAF data directory")
 
 
