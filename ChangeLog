@@ -1,3 +1,29 @@
+2011-08-14  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/defaults-setup.lisp: Removed references to collision-integrals
+
+	* src/package-def.lisp (:thermo): Added dependency on
+	:collision-integrals
+
+	* src/thermo-data.asd (:thermo-data): Removed
+	collision-integrals.lisp, added collision-integrals package as a
+	prerecquisite
+
+	* src/hs-collision-integrals.lisp: New file part of collision
+	integrals package
+
+	* src/lj-collision-integrals.lisp: New file part of collision
+	integrals package
+
+	* src/collision-integrals-defaults.lisp: New file part of
+	collision integrals package
+
+	* src/collision-integrals-package-def.lisp: New file part of
+	collision integrals package
+
+	* src/collision-integrals.asd: Start of refactoring collision
+	integrals out of the package
+
 2011-08-11  Mirko Vukovic  <mirko.vukovic@us.tel.com>
 
 	* src/janaf-coefficients.lisp (initialize-instance): Added

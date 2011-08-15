@@ -23,8 +23,7 @@
    (:module "collision-parameters"
 	    :pathname #P"./"
 	    :depends-on ("thermo-setup")
-	    :components ((:file "lennard-jones-coeffs")
-			 (:file "collision-integrals")))
+	    :components ((:file "lennard-jones-coeffs")))
    (:module "transport-coefficients"
 	    ;; coefficients depend on atomic parameter and transport
 	    ;; models.  They are obtained by interpolating tables and
@@ -58,7 +57,8 @@
 	       :alexandria
 	       :gsll
 	       :mv-grid-utils
-	       "physics-constants"))
+	       "physics-constants"
+	       :collision-integrals))
 
 (asdf:defsystem :thermo-user
   :components

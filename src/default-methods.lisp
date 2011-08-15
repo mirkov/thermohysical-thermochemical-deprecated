@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; Time-stamp: <2011-08-14 22:16:35 default-methods.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -67,6 +67,3 @@
 (setf (default-species-method *transp-coeff-defaults* :lambda-0 :H2)
      (make-assael-table-2))
 
-;; collision integrals
-(setf (default-omega-calc-method :omega-11) (make-kee-omega-11-coeffs)
-      (default-omega-calc-method :omega-22) (make-kee-omega-22-coeffs))

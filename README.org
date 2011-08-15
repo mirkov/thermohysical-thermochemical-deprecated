@@ -1,12 +1,15 @@
-Thermophysical and Thermochemical coefficients for gases and liquids
+Packages in this repository
+- Thermophysical and Thermochemical coefficients for gases and liquids
+- Collision integrals
 
-Data for:
-    - Density and specific volume
-    - C_p and C_v
-    - Enthalpy and entropy
-    - Internal energy and speed of sound
-    - Viscosity and thermal conductivity
-    - Joule-Thomson coefficient Surface tension (saturation curve only)
+Package Thermophysical and Thermochemical coefficients for gases and
+liquids contains data for:
+- Density and specific volume
+- C_p and C_v
+- Enthalpy and entropy
+- Internal energy and speed of sound
+- Viscosity and thermal conductivity
+- Joule-Thomson coefficient Surface tension (saturation curve only)
 
 This package does not include ab-initio methods for calculating the
 properties.  It only includes methods based on simple formulas or
@@ -16,6 +19,9 @@ The data is obtained from on-line databases (such as the NIST webbook)
 and journal articles
 
 All internal calculations and all results are in SI.
+
+Package for collision integrals gives fitting formulas for collision
+integrals Omega-11 and Omega-22
 
 * Status
 
