@@ -1,15 +1,19 @@
-System for calculating thermophysical and thermochemical coefficients
+Thermophysical and Thermochemical coefficients for gases and liquids
 
-* Overview
+Data for:
+    - Density and specific volume
+    - C_p and C_v
+    - Enthalpy and entropy
+    - Internal energy and speed of sound
+    - Viscosity and thermal conductivity
+    - Joule-Thomson coefficient Surface tension (saturation curve only)
 
-Functions for calculating:
- - thermodynamic coefficients (Cp, S, etc)
- - transport-coefficients (viscosity, thermal conductivity)
- - collision integral (Omega) formulas
+This package does not include ab-initio methods for calculating the
+properties.  It only includes methods based on simple formulas or
+table interpolation.
 
-   
-Tables of coefficients or data for calculating the above.  The various
-coefficients are calculated using fits or interpolations.
+The data is obtained from on-line databases (such as the NIST webbook)
+and journal articles
 
 All internal calculations and all results are in SI.
 
@@ -18,6 +22,7 @@ All internal calculations and all results are in SI.
   Fairly stable.  New features added as needed.
 
 ** Future plans
-    I want to re-factor some of the features, such as collision
-    integrals.
+   I want to re-factor some of the features, such as collision
+   integrals, which would be of use in other packages (such as the
+   gas-kinetic formulary)
 
