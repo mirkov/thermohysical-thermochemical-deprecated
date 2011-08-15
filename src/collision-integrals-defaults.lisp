@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-14 22:04:18 collision-integrals-defaults.lisp>
+;; Time-stamp: <2011-08-15 11:14:43 collision-integrals-defaults.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -21,6 +21,9 @@
 
 ;; This file deals with the user interface
 
+;; omega-xx% are methods that calculate the reduced integral using a
+;; model and temperature.  omega-xx* use the default method.  The
+;; latter ones are intended as more user friendly
 (export '(*omega-calc-defaults* omega-11% omega-22%))
 
 
@@ -37,7 +40,7 @@ If model is specified as `t', use default model")
 				 (aref coeffs-vector 0) (aref coeffs-vector 1)
 				 (aref coeffs-vector 2) (aref coeffs-vector 3)))))
 
-(defun omega-11 (T*)
+(defun omega-11* (T*)
   "Evaluate omega-11 at T* using the default method"
   (omega-11% t T*))
 
@@ -60,7 +63,7 @@ If model is specified as `t', use default model")
     (let ((logT* (log T*)))
       (exp (polyeval logT* (slot-value coeff-container 'coeffs-vector))))))
 
-(defun omega-22 (T*)
+(defun omega-22* (T*)
   "Evaluate omega-22 at T* using the default method"
   (omega-22% t T*))
 

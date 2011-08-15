@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-15 05:49:55 lennard-jones-coeffs.lisp>
+;; Time-stamp: <2011-08-15 10:18:16 lennard-jones-coeffs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 ;; (make-lj-coeffs species)
 
 (export '(make-LJ-coeffs *lennard-jones-coeffs* lennard-jones-coeffs
-	  lj-coeffs m sigma epsilon/k))
+	  lj-coeffs mass sigma epsilon/k doc))
 
 ;; Kludge: I copied code from thermo//environment-setup.lisp for the data reading.
 (defparameter *data-directory*
@@ -60,28 +60,36 @@ Signal error if file not found"
 (defclass lj-coeffs ()
   ((species :initarg :species
 	    :accessor species)
-   (m :initarg :mass-amu
-      :accessor mass-amu
+   (m :initarg :mass
+      :accessor mass
       :documentation "Species mass in AMU")
    (sigma :initarg :sigma
 	  :accessor sigma
 	  :documentation "Species cross-section in Angstrom")
    (epsilon/K :initarg :epsilon/K
 	      :accessor epsilon/K
-	      :documentation "Potential-well depth, dimensionless"))
-  (:documentation "Lennard-Jones coefficients for a species"))
+	      :documentation "Potential-well depth, dimensionless")
+   (doc :initarg :doc
+	:accessor doc
+	:documentation "Document data origin and other comments"))
+  (:documentation "Lennard-Jones coefficients for a species
+
+Units are NOT SI:
+- mass in AMU
+- sigma in Angstrom"))
 
 (defmethod print-object ((self lj-coeffs) stream)
   (print-unreadable-object (self stream :type t :identity t)))
 
-(defmethod describe-object ((container lj-coeffs) stream)
+(defmethod describe-object ((self lj-coeffs) stream)
   (format stream "Lennard-Jones coefficients for ~a"
-	    (species container)))
+	    (species self)))
 
 (defun make-lj-coeffs (species)
   (let ((coeffs (lennard-jones-coeffs species)))
     (make-instance 'lj-coeffs
 		   :species species
-		   :mass-amu (cadr (assoc :m coeffs))
+		   :mass (cadr (assoc :m coeffs))
 		   :sigma (cadr (assoc :sigma coeffs))
-		   :epsilon/k (cadr (assoc :epsilon/k coeffs)))))
+		   :epsilon/k (cadr (assoc :epsilon/k coeffs))
+		   :doc "Bird, Stewart & Lightfoot")))

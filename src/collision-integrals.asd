@@ -8,7 +8,10 @@
    (:file "collision-integrals-defaults"
 	  :depends-on ("collision-integrals-package-def"))
    (:file "lennard-jones-coeffs"
+	  :depends-on ("collision-integrals-package-def"))
+   (:file "hard-sphere-coeffs"
 	  :depends-on ("collision-integrals-package-def")))
   :depends-on (:lisp-unit
 	       :alexandria
-	       :my-utils))
+	       :my-utils
+	       :physics-constants))

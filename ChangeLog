@@ -1,5 +1,26 @@
 2011-08-15  Mirko Vukovic  <mirko.vukovic@us.tel.com>
 
+	* src/hs-collision-integrals.lisp (Omega11-hs): Implemented to be
+	similar to the prior definition in the gas-kinetic package.  The
+	Kee formula is flaky (see function documentation).
+	Added unit tests
+
+	* src/collision-integrals-defaults.lisp, src/collision-integrals-package-def.lisp:
+	Changed omega-11,22 to omega-11-22* (the star signifies a reduced
+	collision integral)
+
+	* src/lennard-jones-coeffs.lisp: Added `doc' slot for data
+	traceability.  But the rest of the code does not yet allow for
+	full traceability
+	(make-lj-coeffs): Hardcoded the data source.  Needs to be fixed in
+	a later release.
+
+	* src/kt-transport-coeffs.lisp (lambda-0): Removed `with-slots'
+	binding to `Cv'.  That must have been an error
+
+	* src/hs-collision-integrals.lisp: Imported hard-sphere code from
+	gas-kinetic formulary and adapted to this package
+
 	* src/thermo-data.asd (:thermo-data): Removed dependency on
 	lennard-jones-coeffs.lisp
 	(:thermo-data): Restored dependency on constant-coeff.lisp.  Not

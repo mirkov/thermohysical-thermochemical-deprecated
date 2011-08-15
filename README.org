@@ -16,16 +16,19 @@ properties.  It only includes methods based on simple formulas or
 table interpolation.
 
 The data is obtained from on-line databases (such as the NIST webbook)
-and journal articles
+and journal articles.
 
-All internal calculations and all results are in SI.
+All internal calculations and all results are a mixture of SI and
+chemistry friendly units - atomic mass units, etc.
 
 Package for collision integrals
 - Reads table of Lennard-Jones potential parameters
 - Provides fitting formulas for collision integrals Omega-11 and
   Omega-22
 
-This package is used by the transport coefficients.
+This package is used by the transport coefficients.  As it is closer
+to gas kinetic theory, it uses SI units (mass is in kg, cross-sections
+in meters)  
 
 * Status
 
