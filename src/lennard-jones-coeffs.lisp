@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; Time-stamp: <2011-08-15 05:49:55 lennard-jones-coeffs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -17,13 +17,32 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(in-package :thermo)
+(in-package :omega-xx)
 
-;; Lenard-Jones coefficients are read from a file.  They can be
-;; created as objects using (make-lj-coeffs species)
+;; Lenard-Jones coefficients for calculating the Omega-xx integrals
+;; are read from a file.  They can be created as objects using
+;; (make-lj-coeffs species)
 
-(export '(make-LJ-coeffs *lennard-jones-coeffs* lennard-jones-coeffs))
+(export '(make-LJ-coeffs *lennard-jones-coeffs* lennard-jones-coeffs
+	  lj-coeffs m sigma epsilon/k))
 
+;; Kludge: I copied code from thermo//environment-setup.lisp for the data reading.
+(defparameter *data-directory*
+  (merge-pathnames
+   #P"my-software-add-ons/my-lisp/modeling/thermophysical+thermochemical/thermo-data/"
+   #+WTEHCFMXYP1 #p"/home/977315/"
+   #+CYSSHD1 #P"/home/mv/")
+  "Path to the data directory (not including JANAF tables)")
+
+(defun read-data-file (file &optional (directory *data-directory*))
+  "Return contents of `file' in `directory'
+
+Signal error if file not found"
+  (with-input-from-file (stream
+			 (merge-pathnames file
+					  directory)
+			 :if-does-not-exist :error)
+    (read stream)))
 (defun read-LJ-coeffs (&optional (file "lennard-jones-coeffs.dat"))
   "Read Shomate coefficients for the species"
   (read-data-file file))
@@ -51,6 +70,9 @@
 	      :accessor epsilon/K
 	      :documentation "Potential-well depth, dimensionless"))
   (:documentation "Lennard-Jones coefficients for a species"))
+
+(defmethod print-object ((self lj-coeffs) stream)
+  (print-unreadable-object (self stream :type t :identity t)))
 
 (defmethod describe-object ((container lj-coeffs) stream)
   (format stream "Lennard-Jones coefficients for ~a"

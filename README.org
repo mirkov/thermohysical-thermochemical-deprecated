@@ -20,15 +20,18 @@ and journal articles
 
 All internal calculations and all results are in SI.
 
-Package for collision integrals gives fitting formulas for collision
-integrals Omega-11 and Omega-22
+Package for collision integrals
+- Reads table of Lennard-Jones potential parameters
+- Provides fitting formulas for collision integrals Omega-11 and
+  Omega-22
+
+This package is used by the transport coefficients.
 
 * Status
 
-  Fairly stable.  New features added as needed.
+  Fairly stable, but lightly tested after recent refactoring of
+  collision integrals.
 
-** Future plans
-   I want to re-factor some of the features, such as collision
-   integrals, which would be of use in other packages (such as the
-   gas-kinetic formulary)
+  New features added as needed.
+
 

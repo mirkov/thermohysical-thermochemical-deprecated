@@ -1,3 +1,22 @@
+2011-08-15  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/thermo-data.asd (:thermo-data): Removed dependency on
+	lennard-jones-coeffs.lisp
+	(:thermo-data): Restored dependency on constant-coeff.lisp.  Not
+	sure when I lost that.
+
+	* src/lennard-jones-coeffs.lisp: Moved to collision integrals package:
+	- symbol exports
+	- Reading the coefficients file
+	- print-object (new method)
+
+	* src/collision-integrals-package-def.lisp (:collision-integrals):
+	Added imports from alexandria and my-utils for lennard-jones-coeffs.lisp
+
+	* src/collision-integrals.asd (:collision-integrals): Added
+	"lennard-jones-coeffs.lisp and my-utils package dependency (the
+	latter for polyeval)
+
 2011-08-14  Mirko Vukovic  <mirko.vukovic@us.tel.com>
 
 	* src/defaults-setup.lisp: Removed references to collision-integrals

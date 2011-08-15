@@ -5,6 +5,10 @@
 	  :depends-on ("collision-integrals-package-def"))
    (:file "hs-collision-integrals"
 	  :depends-on ("collision-integrals-package-def"))
-      (:file "collision-integrals-defaults"
+   (:file "collision-integrals-defaults"
+	  :depends-on ("collision-integrals-package-def"))
+   (:file "lennard-jones-coeffs"
 	  :depends-on ("collision-integrals-package-def")))
-  :depends-on (:lisp-unit))
+  :depends-on (:lisp-unit
+	       :alexandria
+	       :my-utils))

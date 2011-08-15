@@ -7,6 +7,8 @@
 				:depends-on ("package-def"))
 			 (:file "external-coeffs"
 				:depends-on ("package-def"))
+			 (:file "constant-coeff"
+				:depends-on ("external-coeffs"))
 			 (:file "spec-dep-method-setup")))
    (:module "thermodynamic-coefficients"
 	    :pathname #P"./"
@@ -15,29 +17,29 @@
 			 (:file "shomate-fits"
 				:depends-on ("tc-external-interface"))
 			 (:file "janaf-coefficients"
+				:depends-on ("tc-external-interface"))
+			 (:file "constant-thermo-coeffs"
 				:depends-on ("tc-external-interface"))))
-   (:module "collision-parameters"
+  #| (:module "collision-parameters"
 	    :pathname #P"./"
 	    :depends-on ("thermo-setup")
-	    :components ((:file "lennard-jones-coeffs")
-			 (:file "collision-integrals")))
+	    :components ((:file "lennard-jones-coeffs")))|#
    (:module "transport-coefficients"
 	    ;; coefficients depend on atomic parameter and transport
 	    ;; models.  They are obtained by interpolating tables and
 	    ;; using fitting formulae
 	    :pathname #P"./"
-	    :depends-on ("thermo-setup"
-			 "collision-parameters")
+	    :depends-on ("thermo-setup")
 	    :components ((:file "transport-coeffs-external-interface")
 			 (:file "lemmon-jacobsen-2004-coeffs")
 			 (:file "assael-et-al-H2-coeffs")
+;;			 (:file "He-thermal-conductivity")
 			 (:file "kt-transport-coeffs")))
    (;; define defaults for a user-friendly defaults
     :module "user-setup"
 	    :pathname #P"./"
 	    :depends-on ("thermo-setup"
 			 "transport-coefficients"
-			 "collision-parameters"
 			 "thermodynamic-coefficients")
 	    :components (;; activate default methods
 			 (:file "default-methods")))
@@ -53,7 +55,8 @@
 	       :alexandria
 	       :gsll
 	       :mv-grid-utils
-	       "physics-constants"))
+	       "physics-constants"
+	       :collision-integrals))
 
 (asdf:defsystem :thermo-user
   :components

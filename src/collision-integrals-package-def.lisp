@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-14 21:49:54 collision-integrals-package-def.lisp>
+;; Time-stamp: <2011-08-15 05:37:38 collision-integrals-package-def.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -20,9 +20,13 @@
 
 (defpackage :collision-integrals
   (:nicknames :omega-xx)
-  (:export :omega-11 :omega-22)
   (:use :cl  :lisp-unit)
+  (:import-from :alexandria :with-input-from-file)
+  (:import-from :my-utils :polyeval)
+  (:export :omega-11 :omega-22)
   (:documentation "Formulas for collision integrals used in gas transport coefficient calculations"))
+
+
 ;; export is done in files in each module, either a setup file, or in
 ;; individual files
 
