@@ -30,6 +30,16 @@ This package is used by the transport coefficients.  As it is closer
 to gas kinetic theory, it uses SI units (mass is in kg, cross-sections
 in meters)  
 
+* Warning
+  Thermal conductivity calculated using Lennard-Jones collision
+  integrals and Cv gives incorrect values for N2 by a factor of 1.25.
+  The code gives correct values for Ar.
+
+  I have tested the values of Cv for both Ar and N2 (which are
+  calculated by the package).  I can't figure out where else the
+  difference could originate form.
+
+  
 * Status
 
   Fairly stable, but lightly tested after recent refactoring of
