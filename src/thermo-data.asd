@@ -14,6 +14,8 @@
 	    :pathname #P"./"
 	    :depends-on ("thermo-setup")
 	    :components ((:file "tc-external-interface")
+			 (:file "constant-thermo-coeffs"
+				:depends-on ("tc-external-interface"))
 			 (:file "shomate-fits"
 				:depends-on ("tc-external-interface"))
 			 (:file "janaf-coefficients"

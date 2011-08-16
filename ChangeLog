@@ -1,4 +1,33 @@
+2011-08-16  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/tc-external-interface.lisp (Cv): For species for which no
+	method is defined, I try calculating Cp and then subract N kb (see
+	doc).
+	(Cv): Added unit tests against CRC tables
+
+	* src/kt-transport-coeffs.lisp (mu-0 lambda-0): Fixed calling
+	structure to lj-coeffs and to omega-22 (now called omega-22* to
+	better conform to the start notation for reduced collision
+	integrals.
+	(): Added unit tests for mu-0 and lambda-0 based on lennard-jones
+	calculations.  The test for lambda-0 for N2 fails because the
+	conductivity is off by a factor of 1.25, while it is correct for
+	Ar.
+
+	* src/thermo-data.asd (:thermo-data): Added
+	`constant-thermo-coeffs' file to the `thermodynamic-coefficients'
+	module
+
+	* src/constant-thermo-coeffs.lisp (Cv): Added informative message
+	to assert form
+
+	* src/lennard-jones-coeffs.lisp (make-LJ-coeffs): Exporting m and
+	sigma.  I need to rethink symbol exporting since some of them (m
+	for example) are exposing the internals of the lj class.
+
 2011-08-15  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/package-def.lisp (:thermo): using collision-integrals symbols
 
 	* src/hs-collision-integrals.lisp (Omega11-hs): Implemented to be
 	similar to the prior definition in the gas-kinetic package.  The

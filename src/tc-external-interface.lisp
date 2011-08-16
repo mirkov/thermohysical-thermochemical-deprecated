@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; Time-stamp: <2011-08-16 11:10:35 tc-external-interface.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -34,9 +34,6 @@
   (make-thermo-defaults-db)
   "Specifies default calculation methods for Cp, S, ...")
 
-
-  
-
 (defgeneric Cp (species temperature)
   (:documentation "Return value of Cp at `temperature' for species
 
@@ -44,15 +41,15 @@ Species properties can be specified in several ways:
  - symbol
  - janaf coefficients in form of a janaf-coefficients object
  - shomate-fit coefficients using the shomate-fit object
+ - constant -- apropritate for ideal gases
 
 In case symbol is given, the method chosen is determined by the
-contents of *thermo-defaults*")
+contents of *thermo-defaults*.")
   (:method ((species symbol) temperature)
-    (let ((method (default-species-method *thermo-defaults* :Cp species)))
-    (if method (funcall #'Cp method temperature)
-	(error "Default method for calculating Cp undefined for ~a" species)))))
-
-
+    (let ((cp-method (default-species-method *thermo-defaults* :Cp species)))
+      (if cp-method
+	  (funcall #'Cp cp-method temperature)
+	  (error "Default method for calculating Cp undefined for ~a" species)))))
 
 (defgeneric Cv (species temperature)
   (:documentation "Return value of Cv at `temperature' for species
@@ -64,11 +61,38 @@ Species properties can be specified in several ways:
  - constant -- apropritate for ideal gases
 
 In case symbol is given, the method chosen is determined by the
-contents of *thermo-defaults*")
+contents of *thermo-defaults*.  If no default method is found, Cp is
+calculated using the law for ideal gases: Cp = Cv + Nk (Kee et al,
+8.126)")
   (:method ((species symbol) temperature)
     (let ((method (default-species-method *thermo-defaults* :Cv species)))
     (if method (funcall #'Cv method temperature)
-	(error "Default method for calculating Cp undefined for ~a" species)))))
+	  (let ((cp-method (default-species-method *thermo-defaults* :Cp species)))
+	    (if cp-method
+		(let ((cp (funcall #'Cp cp-method temperature)))
+		  (- cp (* +A+ +k+)))
+		(error "Default method for calculating Cv undefined for ~a" species)))))))
+
+(define-test Cv
+  ;; compare against CRC values using default methos.  This is not a
+  ;; very exhaustive test
+  (let ((lisp-unit:*epsilon* 1e-2))
+    (assert-number-equal 20.8 (Cv :N2 200))
+    (assert-number-equal 21.8 (Cv :N2 600))
+    (assert-number-equal 26.4 (Cv :N2 1500))
+    (assert-number-equal 29.2 (Cp :N2 200))
+    (assert-number-equal 30.1 (Cp :N2 600))
+    (assert-number-equal 34.7 (Cp :N2 1500))
+
+    (assert-number-equal 12.5 (Cv :Ar 200))
+    (assert-number-equal 12.5 (Cv :Ar 300))
+    (assert-number-equal 12.5 (Cv :Ar 380))
+    (assert-number-equal 20.9 (Cp :Ar 200))
+    (assert-number-equal 20.8 (Cp :Ar 300))
+    (assert-number-equal 20.8 (Cp :Ar 380))))
+  
+  
+
 
 
 (defgeneric S (species temperature)

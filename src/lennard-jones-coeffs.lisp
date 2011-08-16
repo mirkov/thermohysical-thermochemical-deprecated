@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-15 10:18:16 lennard-jones-coeffs.lisp>
+;; Time-stamp: <2011-08-16 09:38:00 lennard-jones-coeffs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 ;; (make-lj-coeffs species)
 
 (export '(make-LJ-coeffs *lennard-jones-coeffs* lennard-jones-coeffs
-	  lj-coeffs mass sigma epsilon/k doc))
+	  lj-coeffs species m mass sigma epsilon/k doc))
 
 ;; Kludge: I copied code from thermo//environment-setup.lisp for the data reading.
 (defparameter *data-directory*

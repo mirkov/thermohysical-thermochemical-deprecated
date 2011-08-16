@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-15 09:59:19 kt-transport-coeffs.lisp>
+;; Time-stamp: <2011-08-16 11:07:16 kt-transport-coeffs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -25,12 +25,26 @@
 (defmethod mu-0 ((coefficients lj-coeffs) temperature)
   (with-slots (m sigma epsilon/K) coefficients
     (* (/ 5 16)
-       (/ (sqrt (* pi m physics-constants:+proton-mass-sp+
-		   physics-constants:+boltzmann-constant-sp+
-		   temperature))
-	  (* pi (expt (* sigma 1e-10)
+       (/ (sqrt (* +pi+ m +amu+ +k+ temperature))
+	  (* +pi+ (expt (* sigma 1e-10)
 		      2)
-	     (omega-22 (/ temperature epsilon/K)))))))
+	     (omega-22* (/ temperature epsilon/K)))))))
+
+
+(define-test mu-0-lj
+  ;; Test of LJ viscosities vs tabulated values (CRC, p.6-14).  I use
+  ;; a tolerance of 5%, because much lower than that the tests will
+  ;; fail
+  (let ((lisp-unit:*epsilon* 5e-2))
+    (let ((coeffs (make-lj-coeffs :Ar)))
+      (assert-number-equal 16e-6 (mu-0 coeffs 200.0))
+      (assert-number-equal 22.9e-6 (mu-0 coeffs 300.0))
+      (assert-number-equal 27.8e-6 (mu-0 coeffs 380.0)))
+    (let ((coeffs (make-lj-coeffs :N2)))
+      (assert-number-equal 12.9e-6 (mu-0 coeffs 200.0))
+      (assert-number-equal 18e-6 (mu-0 coeffs 300.0))
+      (assert-number-equal 29.5e-6 (mu-0 coeffs 600.0)))))
+  
 
 (defmethod mu-0 ((coefficients hs-coeffs) temperature)
   "Hard-sphere viscosity
@@ -38,11 +52,9 @@
 Kee et al, (12.50)"
   (with-slots (m sigma) coefficients
     (* (/ 5 16)
-       (/ (sqrt (* pi m physics-constants:+proton-mass-sp+
-		   physics-constants:+boltzmann-constant-sp+
-		   temperature))
-	  (* pi (expt (* sigma 1e-10)
-		      2))))))
+       (/ (sqrt (* +pi+ m +amu+ +k+ temperature))
+	  (* +pi+ (expt (* sigma 1e-10)
+			2))))))
 
 
 
@@ -52,14 +64,15 @@ Kee et al, (12.50)"
 Kee et al, 12.101"
   (with-slots (species sigma epsilon/K m) coefficients
     (let ((Cv (Cv species temperature)))
-    (* (/ 25d0
-	  (* 32d0 (sqrt pi)))
-       (sqrt (/ (* +R+ temperature)
-		(* m 1e-3)))
+    (* 
+       (/ 25d0
+	  (* 32d0 (sqrt +pi+)))
+       (sqrt (/ (* +k+ temperature)
+		(* m +amu+)))
        (/ Cv
 	  (* (expt (* sigma 1e-10) 2)
 	     +A+
-	     (omega-22 (/ temperature epsilon/K))))))))
+	     (omega-22* (/ temperature epsilon/K))))))))
 
 (defmethod lambda-0 ((coefficients hs-coeffs) temperature)
   "Thermal conductivity using the hard-sphere model
@@ -68,9 +81,23 @@ Kee et al, 12.57"
   (with-slots (species sigma m) coefficients
     (let ((Cv (Cv species temperature)))
     (* (/ 25d0
-	  (* 32d0 (sqrt pi)))
-       (sqrt (/ (* +R+ temperature)
-		(* m 1e-3)))
+	  (* 32d0 (sqrt +pi+)))
+       (sqrt (/ (* +k+ temperature)
+		(* m +amu+)))
        (/ Cv
 	  (* (expt (* sigma 1e-10) 2)
 	     +A+))))))
+
+(define-test lambda-0-lj
+  ;; Test of LJ thermal conductivities vs tabulated values (CRC,
+  ;; p.6-14).  I use a tolerance of 5%, because much lower than that
+  ;; the tests will fail
+  (let ((lisp-unit:*epsilon* 5e-2))
+    (let ((coeffs (make-lj-coeffs :Ar)))
+      (assert-number-equal 12.5e-3 (lambda-0 coeffs 200.0))
+      (assert-number-equal 17.9e-3 (lambda-0 coeffs 300.0))
+      (assert-number-equal 21.7e-3 (lambda-0 coeffs 380.0)))
+    (let ((coeffs (make-lj-coeffs :N2)))
+      (assert-number-equal 18.4e-3 (lambda-0 coeffs 200.0))
+      (assert-number-equal 25.8e-3 (lambda-0 coeffs 300.0))
+      (assert-number-equal 44.5e-3 (lambda-0 coeffs 600.0)))))

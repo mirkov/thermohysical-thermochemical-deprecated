@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; Time-stamp: <2011-08-16 10:20:05 constant-thermo-coeffs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -24,6 +24,8 @@
   "Cv as a constant.  Applicable to ideal gases"
   (with-slots (data min-T max-T) obj
     (assert (and (<= min-T temperature)
-		 (>= max-T temperature)))
+		 (>= max-T temperature))
+	    () "Temperature ~a is outside the valid temperature range: ~a -- ~a"
+	    temperature min-T max-T)
     data))
 
