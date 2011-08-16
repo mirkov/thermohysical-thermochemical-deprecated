@@ -47,3 +47,5 @@ residual fluid thermal conductivity equations")
   "Boltzmann's constant, 1.3807e-23 J/K")
 (defconstant +amu+ physics-constants:+atomic-mass-unit-sp+
   "Atomic mass unit, 1.6605e-27 kg")
+(defconstant +pi+ (coerce pi 'single-float)
+  "pi, single precision to prevent contagion with long numbers")

@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-02-10 06:41:07 mv-gpl-header.txt>
+;; Time-stamp: <2011-08-16 13:31:58 transport-coeffs-external-interface.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -93,7 +93,7 @@ In case symbol is given, the method chosen is determined by the
 contents of *transp-coeff-defaults*")
     (:method ((species symbol) temperature pressure)
     (let ((method (default-species-method *transp-coeff-defaults* :D-0 species)))
-    (if method (funcall #'D-0 method temperature)
+    (if method (funcall #'D-0 method temperature pressure)
 	(error "Default method for calculating D-0 undefined for ~a" species)))))
 
 

@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-16 11:07:16 kt-transport-coeffs.lisp>
+;; Time-stamp: <2011-08-16 13:48:57 kt-transport-coeffs.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -23,11 +23,16 @@
 ;; epsilon and the collision integrals
 
 (defmethod mu-0 ((coefficients lj-coeffs) temperature)
+  "Calculate viscosity using kinetic theory (Kee et al, 12.100)
+
+To prevent floating underflow in single-float the 1e-10^2 factor from
+sigma^2 (sigma being in Angstrom) is moved into the square root in the
+numerator, and is used to `normalize' +amu+ and +k+
+"
   (with-slots (m sigma epsilon/K) coefficients
     (* (/ 5 16)
-       (/ (sqrt (* +pi+ m +amu+ +k+ temperature))
-	  (* +pi+ (expt (* sigma 1e-10)
-		      2)
+       (/ (sqrt (* +pi+ m (/ +amu+ 1e-20) (/ +k+ 1e-20) temperature))
+	  (* +pi+ (expt sigma 2)
 	     (omega-22* (/ temperature epsilon/K)))))))
 
 
@@ -52,9 +57,8 @@
 Kee et al, (12.50)"
   (with-slots (m sigma) coefficients
     (* (/ 5 16)
-       (/ (sqrt (* +pi+ m +amu+ +k+ temperature))
-	  (* +pi+ (expt (* sigma 1e-10)
-			2))))))
+       (/ (sqrt (* +pi+ m (/ +amu+ 1e-20) (/ +k+ 1e-20) temperature))
+	  (* +pi+ (expt sigma 2))))))
 
 
 

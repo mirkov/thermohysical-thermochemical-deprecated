@@ -39,6 +39,8 @@ in meters)
   calculated by the package).  I can't figure out where else the
   difference could originate form.
 
+  Thermal conductivity calculation using the Lemmon-Jacobsen
+  coefficients gives correct values of conductivity.
   
 * Status
 

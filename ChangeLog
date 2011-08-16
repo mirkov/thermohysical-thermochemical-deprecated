@@ -1,5 +1,24 @@
 2011-08-16  Mirko Vukovic  <mirko.vukovic@us.tel.com>
 
+	* README.org: Added more details to warning about thermal
+	conductivity calculations.
+
+	* src/environment-setup.lisp (+pi+): +pi+ is single precision
+	float.  It's used forced me to rearange the order of calculation
+	in lennard-jones mu-0 to prevent floating underflow.  When pi was
+	double float, this problem did not arise.
+
+	* src/kt-transport-coeffs.lisp (mu-0): Fixed order of calculations
+	to prevent an underflow that resulted in mu-0=0.0.  Fixed both hs
+	and lj methods
+
+	* src/transport-coeffs-external-interface.lisp (D-0): Fixed bug in
+	funcall to D-0.  Had two arguments instead of required three
+
+	* src/lemmon-jacobsen-2004-coeffs.lisp (Ni): Added error check
+	(): Added copyright header
+	(): Added documentation
+
 	* src/tc-external-interface.lisp (Cv): For species for which no
 	method is defined, I try calculating Cp and then subract N kb (see
 	doc).
