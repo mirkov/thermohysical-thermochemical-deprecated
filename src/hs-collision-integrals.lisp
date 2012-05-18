@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-15 12:00:21 hs-collision-integrals.lisp>
+;; Time-stamp: <2011-08-23 20:48:41 hs-collision-integrals.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -87,8 +87,8 @@ The Kee formula is evidently a incomplete simplification with syntax errors"
     (assert-number-equal (* 2.0 (omega11-hs Temp m sigma))
 			 (Omega22-hs  Temp m sigma))))
 
-(defun omega-hs-coeff (l s)
-  "Multiplier for the hard-sphere collision integral
+(defun omegaLS-hs* (l s)
+  "Scale factor for the general hard-sphere collision integral
 
 Indices limited below 6, for one reason to limit overflows in the
 factorial calculation of (1+s)!
@@ -105,11 +105,11 @@ Kee et al, (12.95)"
        (- 1 (* 1/2 (/ (+ 1 (expt -1 l))
 		      (+ 1 l)))))))
 
-(define-test omega-hs-coeff
-  (assert-equal 1 (omega-hs-coeff 1 1))
-  (assert-equal 3 (omega-hs-coeff 1 2))
-  (assert-equal 12 (omega-hs-coeff 1 3))
-  (assert-equal 2 (omega-hs-coeff 2 2)))
+(define-test omegaLS-hs*
+  (assert-equal 1 (omegaLS-hs* 1 1))
+  (assert-equal 3 (omegaLS-hs* 1 2))
+  (assert-equal 12 (omegaLS-hs* 1 3))
+  (assert-equal 2 (omegaLS-hs* 2 2)))
 #|
 (define-test Omega11-a
   "Simplest test where the argument of the root should be unity"

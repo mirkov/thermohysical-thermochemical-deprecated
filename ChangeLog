@@ -1,3 +1,25 @@
+2011-08-23  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/hs-collision-integrals.lisp (omega-hs-coeff, omegaLS-hs*):
+	Renamed omega-hs-coeff into omegaLS-hs*
+
+2011-08-18  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/tc-external-interface.lisp: Added unit tests for O2 Cv and
+	Cp.  Pass.
+
+	* src/kt-transport-coeffs.lisp (lambda-0-lj): Added uni test for
+	O2 thermal conductivity.  It fails by a factor of 1.27
+
+2011-08-17  Mirko Vukovic  <mirko.vukovic@us.tel.com>
+
+	* src/lemmon-jacobsen-2004-coeffs.lisp
+	(LJ04-dilute-thermal-conductivity): Returns multiple values of all
+	terms in approximation.  Updated doc
+
+	* src/tc-external-interface.lisp (Cv, Cv&Cp): Renamed test Cv into
+	Cv&Cp.  Added documentation.  Verified correctness of CRC values.
+
 2011-08-16  Mirko Vukovic  <mirko.vukovic@us.tel.com>
 
 	* README.org: Added more details to warning about thermal

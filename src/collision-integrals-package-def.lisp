@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-15 11:12:03 collision-integrals-package-def.lisp>
+;; Time-stamp: <2011-08-28 16:29:14 collision-integrals-package-def.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -24,6 +24,8 @@
   (:import-from :alexandria :with-input-from-file)
   (:import-from :my-utils :polyeval :^2)
   (:import-from :physics-constants :+boltzmann-constant-sp+)
+  (:import-from :mv-grid+gsll :tabular-data :make-table
+		:init-table-interp :interp-table)
   (:export :omega-11* :omega-22*)
   (:documentation "Formulas for collision integrals used in gas transport coefficient calculations"))
 

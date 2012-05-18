@@ -49,4 +49,8 @@ in meters)
 
   New features added as needed.
 
+** Future plans
+   I want to re-factor some of the features, such as collision
+   integrals, which would be of use in other packages (such as the
+   gas-kinetic formulary)
 

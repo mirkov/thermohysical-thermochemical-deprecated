@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-15 11:14:43 collision-integrals-defaults.lisp>
+;; Time-stamp: <2011-08-28 18:00:47 collision-integrals-defaults.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -67,6 +67,54 @@ If model is specified as `t', use default model")
   "Evaluate omega-22 at T* using the default method"
   (omega-22% t T*))
 
+(defgeneric omega-12% (model reduced-temperature)
+  (:documentation "Evaluate the omega-12 `model' at `reduced-temperature'
+If model is specified as `t', use default model")
+  (:method ((model (eql t)) reduced-temperature)
+    (funcall #'omega-12% (default-omega-calc-method :omega-12)
+	     reduced-temperature))
+  (:method ((type (eql :hs-12)) T*)
+    (declare (ignore type T*))
+      (omegaLS-hs* 1 2)))
+
+(defun omega-12* (T*)
+  "Evaluate omega-12 at T* using the default method"
+  (omega-12% t T*))
+
+(defgeneric omega-13% (model reduced-temperature)
+  (:documentation "Evaluate the omega-13 `model' at `reduced-temperature'
+If model is specified as `t', use default model")
+  (:method ((model (eql t)) reduced-temperature)
+    (funcall #'omega-13% (default-omega-calc-method :omega-13)
+	     reduced-temperature))
+  (:method ((type (eql :hs-13)) T*)
+    (declare (ignore type T*))
+      (omegaLS-hs* 1 3)))
+
+(defun omega-13* (T*)
+  "Evaluate omega-13 at T* using the default method"
+  (omega-13% t T*))
+
+
+(defgeneric omega-14% (model reduced-temperature)
+  (:documentation "Evaluate the omega-14 `model' at `reduced-temperature'
+If model is specified as `t', use default model")
+  (:method ((model (eql t)) reduced-temperature)
+    (funcall #'omega-14% (default-omega-calc-method :omega-14)
+	     reduced-temperature)))
+(defun omega-14* (T*)
+  "Evaluate omega-14 at T* using the default method"
+  (omega-14% t T*))
+
+(defgeneric omega-15% (model reduced-temperature)
+  (:documentation "Evaluate the omega-15 `model' at `reduced-temperature'
+If model is specified as `t', use default model")
+  (:method ((model (eql t)) reduced-temperature)
+    (funcall #'omega-15% (default-omega-calc-method :omega-15)
+	     reduced-temperature)))
+(defun omega-15* (T*)
+  "Evaluate omega-15 at T* using the default method"
+  (omega-15% t T*))
 
 
 
@@ -74,13 +122,12 @@ If model is specified as `t', use default model")
 ;;; setting and changing default methods
 (defparameter *omega-calc-defaults*
   (list (list :omega-11)
-	(list :omega-22)))
+	(list :omega-22)
+	(list :omega-12)
+	(list :omega-13)
+	(list :omega-14)
+	(list :omega-15)))
 
-
-(define-test default-omega-calc-method
-  (assert-equal 'kee-omega-11-coeffs
-		(class-name (class-of
-			     (default-omega-calc-method :omega-11)))))
 
 (defun default-omega-calc-method (coefficient)
   (cdr (assoc coefficient *omega-calc-defaults*)))
@@ -91,6 +138,18 @@ If model is specified as `t', use default model")
 
 (defsetf default-omega-calc-method set-default-omega-calc-method)
 
+(let ((tabulated-omega* (make-omega*-table)))
+  (setf (default-omega-calc-method :omega-11) (make-kee-omega-11-coeffs)
+	(default-omega-calc-method :omega-12) tabulated-omega*
+	(default-omega-calc-method :omega-13) tabulated-omega*
+	(default-omega-calc-method :omega-14) tabulated-omega*
+	(default-omega-calc-method :omega-15) tabulated-omega*
+	(default-omega-calc-method :omega-22) (make-kee-omega-22-coeffs)))
 
-(setf (default-omega-calc-method :omega-11) (make-kee-omega-11-coeffs)
-      (default-omega-calc-method :omega-22) (make-kee-omega-22-coeffs))
+
+(define-test default-omega-calc-method
+  (assert-equal 'kee-omega-11-coeffs
+		(class-name (class-of
+			     (default-omega-calc-method :omega-11))))
+  (assert-equal :hs-13 (default-omega-calc-method :omega-13)))
+

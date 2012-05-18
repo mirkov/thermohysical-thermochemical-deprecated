@@ -57,6 +57,8 @@
 	       :alexandria
 	       :gsll
 	       :mv-grid-utils
+	       :molecular-potentials
+	       :collision-integrals
 	       "physics-constants"))
 
 (asdf:defsystem :thermo-user

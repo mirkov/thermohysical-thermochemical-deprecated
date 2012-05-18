@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-14 22:16:35 default-methods.lisp>
+;; Time-stamp: <2011-10-20 13:36:28 default-methods.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -44,15 +44,15 @@
 (mapcar
  #'(lambda (species)
      (setf (default-species-method *transp-coeff-defaults* :mu-0 species)
-      (make-lj-coeffs species)))
- '(:ar :n2 :o2 :air :he :h2))
+      (make-species-lennard-jones-6/12-potential species)))
+ '(:ar :n2 :o2 :air :he :h2 :co2))
 
 ;; thermal conductivity using the lennard-jones potentials and kinetic
 ;; theory formulation
 (mapcar
  #'(lambda (species)
      (setf (default-species-method *transp-coeff-defaults* :lambda-0 species)
-      (make-lj-coeffs species)))
+      (make-species-lennard-jones-6/12-potential species)))
  '(:he))
 
 ;; thermal conductivity from Lemmon & Jacobsen based on review of

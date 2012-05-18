@@ -1,5 +1,5 @@
 ;; Mirko Vukovic
-;; Time-stamp: <2011-08-16 11:10:35 tc-external-interface.lisp>
+;; Time-stamp: <2011-08-25 22:02:30 tc-external-interface.lisp>
 ;; 
 ;; Copyright 2011 Mirko Vukovic
 ;; Distributed under the terms of the GNU General Public License
@@ -73,23 +73,33 @@ calculated using the law for ideal gases: Cp = Cv + Nk (Kee et al,
 		  (- cp (* +A+ +k+)))
 		(error "Default method for calculating Cv undefined for ~a" species)))))))
 
-(define-test Cv
-  ;; compare against CRC values using default methos.  This is not a
+(define-test Cv&Cp
+  ;; compare against CRC values (79th ed) using default methods.
+  ;; This is not a
   ;; very exhaustive test
   (let ((lisp-unit:*epsilon* 1e-2))
+    ;; N2: (CRC 79th Ed., p.6-14)
     (assert-number-equal 20.8 (Cv :N2 200))
     (assert-number-equal 21.8 (Cv :N2 600))
     (assert-number-equal 26.4 (Cv :N2 1500))
     (assert-number-equal 29.2 (Cp :N2 200))
     (assert-number-equal 30.1 (Cp :N2 600))
     (assert-number-equal 34.7 (Cp :N2 1500))
-
+    ;; Ar: (CRC 79th Ed., p.6-18)
     (assert-number-equal 12.5 (Cv :Ar 200))
     (assert-number-equal 12.5 (Cv :Ar 300))
     (assert-number-equal 12.5 (Cv :Ar 380))
     (assert-number-equal 20.9 (Cp :Ar 200))
     (assert-number-equal 20.8 (Cp :Ar 300))
-    (assert-number-equal 20.8 (Cp :Ar 380))))
+    (assert-number-equal 20.8 (Cp :Ar 380))
+    ;; O2: (CRC 79th Ed., p. 6-15)
+    (assert-number-equal 20.8 (Cv :O2 200))
+    (assert-number-equal 21.1 (Cv :O2 300))
+    (assert-number-equal 21.6 (Cv :O2 380))
+    (assert-number-equal 29.3 (Cp :O2 200))
+    (assert-number-equal 29.4 (Cp :O2 300))
+    (assert-number-equal 30.0 (Cp :O2 380))))
+
   
   
 
